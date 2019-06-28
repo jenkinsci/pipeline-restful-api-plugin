@@ -116,19 +116,23 @@
             <id>private.repo.jenkins-ci.org</id>
             <url>https://129.28.182.197/nexus/repository/jenkins/</url>
         </repository>
+        <!--
         <repository>
             <id>repo.jenkins-ci.org</id>
             <url>https://repo.jenkins-ci.org/public/</url>
         </repository>
+        -->
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>private.repo.jenkins-ci.org</id>
             <url>https://129.28.182.197/nexus/repository/jenkins/</url>
         </pluginRepository>
+        <!--
         <pluginRepository>
             <id>repo.jenkins-ci.org</id>
             <url>https://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
+        -->
     </pluginRepositories>
 </project>
