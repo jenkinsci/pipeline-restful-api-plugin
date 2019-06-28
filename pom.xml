@@ -115,13 +115,13 @@
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>
-            <url>https://repo.jenkins-ci.org/public/</url>
+            <url>http://nexus.k8s.surenpi.com/repository/jenkins/</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>repo.jenkins-ci.org</id>
-            <url>https://repo.jenkins-ci.org/public/</url>
+            <url>http://nexus.k8s.surenpi.com/repository/jenkins/</url>
         </pluginRepository>
     </pluginRepositories>
 </project>
