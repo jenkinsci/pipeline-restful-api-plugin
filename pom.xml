@@ -110,11 +110,23 @@
         <developerConnection>scm:git:git@github.com:linuxsuren/${project.artifactId}-plugin.git</developerConnection>
         <url>https://github.com/linuxsuren/${project.artifactId}-plugin</url>
     </scm>
+    
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>maven.jenkins-ci.org</id>
+      <url>http://129.28.182.197/nexus/repository/maven-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>maven.jenkins-ci.org</id>
+      <url>http://129.28.182.197/nexus/repository/maven-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 
     <repositories>
         <repository>
             <id>private.repo.jenkins-ci.org</id>
-            <url>https://129.28.182.197/nexus/repository/jenkins/</url>
+            <url>http://129.28.182.197/nexus/repository/jenkins/</url>
         </repository>
         <!--
         <repository>
@@ -126,7 +138,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>private.repo.jenkins-ci.org</id>
-            <url>https://129.28.182.197/nexus/repository/jenkins/</url>
+            <url>http://129.28.182.197/nexus/repository/jenkins/</url>
         </pluginRepository>
         <!--
         <pluginRepository>
