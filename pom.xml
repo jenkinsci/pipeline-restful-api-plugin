@@ -127,7 +127,7 @@
     <repositories>
         <repository>
             <id>private.repo.jenkins-ci.org</id>
-            <url>http://129.28.182.197/nexus/repository/jenkins/</url>
+            <url>http://129.28.182.197/nexus/repository/maven-public/</url>
         </repository>
         <repository>
             <id>repo.jenkins-ci.org</id>
@@ -137,7 +137,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>private.repo.jenkins-ci.org</id>
-            <url>http://129.28.182.197/nexus/repository/jenkins/</url>
+            <url>http://129.28.182.197/nexus/repository/maven-public/</url>
         </pluginRepository>
         <pluginRepository>
             <id>repo.jenkins-ci.org</id>
