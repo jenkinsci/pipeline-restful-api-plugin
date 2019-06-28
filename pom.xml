@@ -115,11 +115,11 @@
   <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
-      <id>maven.jenkins-ci.org</id>
+      <id>private.maven.jenkins-ci.org</id>
       <url>http://129.28.182.197/nexus/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
-      <id>maven.jenkins-ci.org</id>
+      <id>private.maven.jenkins-ci.org</id>
       <url>http://129.28.182.197/nexus/repository/maven-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
