@@ -9,7 +9,7 @@
     </parent>
     <groupId>io.jenkins.plugins</groupId>
     <artifactId>test-update-center</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <properties>
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
@@ -116,7 +116,7 @@
     <repository>
       <uniqueVersion>false</uniqueVersion>
       <id>private.maven.jenkins-ci.org</id>
-      <url>https://129.28.182.197/nexus/repository/maven-releases/</url>
+      <url>http://129.28.182.197/nexus/repository/maven-public/</url>
     </repository>
     <snapshotRepository>
       <id>private.maven.jenkins-ci.org</id>
