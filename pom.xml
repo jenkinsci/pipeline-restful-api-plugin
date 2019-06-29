@@ -116,7 +116,7 @@
     <repository>
       <uniqueVersion>false</uniqueVersion>
       <id>private.maven.jenkins-ci.org</id>
-      <url>http://129.28.182.197/nexus/repository/jenkins/</url>
+      <url>http://129.28.182.197/nexus/repository/maven-public/</url>
     </repository>
     <snapshotRepository>
       <id>private.maven.jenkins-ci.org</id>
