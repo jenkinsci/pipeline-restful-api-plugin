@@ -121,7 +121,7 @@
     <repository>
       <uniqueVersion>false</uniqueVersion>
       <id>private.maven.jenkins-ci.org</id>
-      <url>https://129.28.182.197/nexus/repository/maven-releases/</url>
+      <url>http://jenkins.k8s.surenpi.com:8081/nexus/content/repositories/releases/</url>
     </repository>
     <snapshotRepository>
       <id>private.maven.jenkins-ci.org</id>
