@@ -125,14 +125,14 @@
     </repository>
     <snapshotRepository>
       <id>private.maven.jenkins-ci.org</id>
-      <url>http://129.28.182.197/nexus/repository/maven-snapshots/</url>
+      <url>http://jenkins.k8s.surenpi.com:8081/nexus/content/repositories/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 
     <repositories>
         <repository>
             <id>private.repo.jenkins-ci.org</id>
-            <url>http://129.28.182.197/nexus/repository/maven-public/</url>
+            <url>http://jenkins.k8s.surenpi.com:8081/nexus/content/repositories/releases/</url>
         </repository>
         <repository>
             <id>repo.jenkins-ci.org</id>
@@ -142,7 +142,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>private.repo.jenkins-ci.org</id>
-            <url>http://129.28.182.197/nexus/repository/maven-public/</url>
+            <url>http://jenkins.k8s.surenpi.com:8081/nexus/content/repositories/releases/</url>
         </pluginRepository>
         <pluginRepository>
             <id>repo.jenkins-ci.org</id>
