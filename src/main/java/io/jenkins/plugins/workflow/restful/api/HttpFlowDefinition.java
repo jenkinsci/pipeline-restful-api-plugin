@@ -1,25 +1,18 @@
-package io.jenkins.plugins.sample;
+package io.jenkins.plugins.workflow.restful.api;
 
 import hudson.Extension;
 import hudson.model.Action;
-import hudson.model.Job;
 import hudson.model.TaskListener;
-import hudson.scm.SCM;
-import hudson.scm.SCMDescriptor;
 import hudson.util.IOUtils;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowExecution;
 import org.jenkinsci.plugins.workflow.flow.FlowDefinition;
 import org.jenkinsci.plugins.workflow.flow.FlowDefinitionDescriptor;
-import org.jenkinsci.plugins.workflow.flow.FlowExecution;
 import org.jenkinsci.plugins.workflow.flow.FlowExecutionOwner;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.Stapler;
-import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 
 public class HttpFlowDefinition extends FlowDefinition {

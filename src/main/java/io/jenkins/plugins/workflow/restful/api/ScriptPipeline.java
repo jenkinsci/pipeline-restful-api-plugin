@@ -1,11 +1,8 @@
-package io.jenkins.plugins.sample;
+package io.jenkins.plugins.workflow.restful.api;
 
-import java.util.Date;
-
-public class Pipeline {
+public class ScriptPipeline extends Pipeline {
     private String script;
     private boolean sandbox;
-    private String displayName;
 
     public String getScript() {
         return script;
@@ -21,14 +18,5 @@ public class Pipeline {
 
     public void setSandbox(boolean sandbox) {
         this.sandbox = sandbox;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        new Date().getTime();
-        this.displayName = displayName;
     }
 }

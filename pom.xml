@@ -8,21 +8,15 @@
         <relativePath />
     </parent>
     <groupId>io.jenkins.plugins</groupId>
-    <artifactId>test-update-center</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <artifactId>workflow-restful-api</artifactId>
+    <version>0.1-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <properties>
-        <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
         <jenkins.version>2.164.1</jenkins.version>
         <java.level>8</java.level>
-        <!-- Other properties you may want to use:
-          ~ jenkins-test-harness.version: Jenkins Test Harness version you use to test the plugin. For Jenkins version >= 1.580.1 use JTH 2.0 or higher.
-          ~ hpi-plugin.version: The HPI Maven Plugin version used by the plugin..
-          ~ stapler-plugin.version: The Stapler Maven plugin version required by the plugin.
-     -->
     </properties>
-    <name>TODO Plugin</name>
-    <!-- The default licence for Jenkins OSS Plugins is MIT. Substitute for the applicable one if needed. -->
+    <name>Workflow restFul API Plugin</name>
+
     <licenses>
         <license>
             <name>MIT License</name>
@@ -39,43 +33,36 @@
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-step-api</artifactId>
             <version>2.19</version>
-            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-cps</artifactId>
             <version>2.39</version>
-            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-job</artifactId>
             <version>2.11.2</version>
-            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-basic-steps</artifactId>
             <version>2.6</version>
-            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-durable-task-step</artifactId>
             <version>2.13</version>
-            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-api</artifactId>
             <version>2.30</version>
-            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-support</artifactId>
             <version>3.3</version>
-            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.pipeline-stage-view</groupId>
@@ -83,67 +70,30 @@
             <version>2.10</version>
         </dependency>
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jenkins-ci.plugins</groupId>
-                <artifactId>script-security</artifactId>
-                <version>1.39</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jenkins-ci.plugins</groupId>
-                <artifactId>scm-api</artifactId>
-                <version>2.2.6</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
-    <!-- If you want this to appear on the wiki page:
     <developers>
       <developer>
-        <id>bhacker</id>
-        <name>Bob Q. Hacker</name>
-        <email>bhacker@nowhere.net</email>
+        <id>linuxsuren</id>
+        <name>Zhao Xiaojie</name>
+        <email>linuxsuren@gmail.com</email>
       </developer>
-    </developers> -->
+    </developers>
 
-    <url>https://wiki.jenkins.io/display/JENKINS/TODO+Plugin</url>
+    <url>https://wiki.jenkins.io/display/JENKINS/Workflow+restFul+API+Plugin</url>
     <scm>
-        <connection>scm:git:git://github.com/linuxsuren/${project.artifactId}-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:linuxsuren/${project.artifactId}-plugin.git</developerConnection>
-        <url>https://github.com/linuxsuren/${project.artifactId}-plugin</url>
-      <tag>HEAD</tag>
-  </scm>
-    
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>private.maven.jenkins-ci.org</id>
-      <url>http://jenkins.k8s.surenpi.com:8081/nexus/content/repositories/releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>private.maven.jenkins-ci.org</id>
-      <url>http://jenkins.k8s.surenpi.com:8081/nexus/content/repositories/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
+        <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <repositories>
-        <repository>
-            <id>private.repo.jenkins-ci.org</id>
-            <url>http://jenkins.k8s.surenpi.com:8081/nexus/content/repositories/releases/</url>
-        </repository>
         <repository>
             <id>repo.jenkins-ci.org</id>
             <url>https://repo.jenkins-ci.org/public/</url>
         </repository>
     </repositories>
     <pluginRepositories>
-        <pluginRepository>
-            <id>private.repo.jenkins-ci.org</id>
-            <url>http://jenkins.k8s.surenpi.com:8081/nexus/content/repositories/releases/</url>
-        </pluginRepository>
         <pluginRepository>
             <id>repo.jenkins-ci.org</id>
             <url>https://repo.jenkins-ci.org/public/</url>
