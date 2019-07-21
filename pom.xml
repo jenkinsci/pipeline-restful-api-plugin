@@ -8,14 +8,14 @@
         <relativePath />
     </parent>
     <groupId>io.jenkins.plugins</groupId>
-    <artifactId>workflow-restful-api</artifactId>
+    <artifactId>pipeline-restful-api</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <properties>
         <jenkins.version>2.164.1</jenkins.version>
         <java.level>8</java.level>
     </properties>
-    <name>Workflow restFul API Plugin</name>
+    <name>Pipeline restFul API Plugin</name>
 
     <licenses>
         <license>

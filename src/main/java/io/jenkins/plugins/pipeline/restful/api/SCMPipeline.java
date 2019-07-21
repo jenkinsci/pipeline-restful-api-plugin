@@ -1,4 +1,4 @@
-package io.jenkins.plugins.workflow.restful.api;
+package io.jenkins.plugins.pipeline.restful.api;
 
 public class SCMPipeline extends Pipeline {
     private String scriptPath;

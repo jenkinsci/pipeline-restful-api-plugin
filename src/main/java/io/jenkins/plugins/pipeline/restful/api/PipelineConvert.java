@@ -1,4 +1,4 @@
-package io.jenkins.plugins.workflow.restful.api;
+package io.jenkins.plugins.pipeline.restful.api;
 
 import org.jenkinsci.plugins.workflow.flow.FlowDefinition;
 

@@ -1,4 +1,4 @@
-package io.jenkins.plugins.workflow.restful.api;
+package io.jenkins.plugins.pipeline.restful.api;
 
 import hudson.Extension;
 import org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition;
