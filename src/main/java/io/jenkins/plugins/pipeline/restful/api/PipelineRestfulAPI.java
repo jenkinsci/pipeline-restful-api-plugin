@@ -5,6 +5,7 @@ import com.cloudbees.workflow.util.ModelUtil;
 import com.cloudbees.workflow.util.ServeJson;
 import hudson.Extension;
 import hudson.ExtensionList;
+import hudson.model.Item;
 import hudson.util.HttpResponses;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
@@ -17,7 +18,7 @@ import org.kohsuke.stapler.interceptor.RequirePOST;
 import java.io.IOException;
 
 @Extension
-public class JobEditAPI extends AbstractWorkflowJobActionHandler {
+public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
     public static final String URL_BASE = "restFul";
     public static String getUrl(WorkflowJob job) {
         return ModelUtil.getFullItemUrl(job.getUrl()) + URL_BASE;
@@ -30,6 +31,8 @@ public class JobEditAPI extends AbstractWorkflowJobActionHandler {
 
     @ServeJson
     public Pipeline doIndex() {
+        Jenkins.get().checkPermission(Item.CONFIGURE);
+
         WorkflowJob job = getJob();
         FlowDefinition jobDef = job.getDefinition();
 
@@ -45,6 +48,8 @@ public class JobEditAPI extends AbstractWorkflowJobActionHandler {
 
     @RequirePOST
     public HttpResponse doUpdate(@QueryParameter String script) throws IOException {
+        Jenkins.get().checkPermission(Item.CONFIGURE);
+
         WorkflowJob job = getJob();
         job.setDefinition(new CpsFlowDefinition(script, true));
         job.save();
