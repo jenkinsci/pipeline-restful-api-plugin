@@ -11,6 +11,8 @@ import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.flow.FlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.DoNotUse;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.interceptor.RequirePOST;
@@ -18,6 +20,7 @@ import org.kohsuke.stapler.interceptor.RequirePOST;
 import java.io.IOException;
 
 @Extension
+@Restricted(DoNotUse.class)
 public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
     public static final String URL_BASE = "restFul";
     public static String getUrl(WorkflowJob job) {
