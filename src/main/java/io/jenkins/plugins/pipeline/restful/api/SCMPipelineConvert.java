@@ -4,10 +4,10 @@ import hudson.Extension;
 import org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition;
 import org.jenkinsci.plugins.workflow.flow.FlowDefinition;
 import org.kohsuke.accmod.Restricted;
-import org.kohsuke.accmod.restrictions.DoNotUse;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
 
 @Extension
-@Restricted(DoNotUse.class)
+@Restricted(NoExternalUse.class)
 public class SCMPipelineConvert implements PipelineConvert {
     @Override
     public boolean accept(FlowDefinition flowDefinition) {
