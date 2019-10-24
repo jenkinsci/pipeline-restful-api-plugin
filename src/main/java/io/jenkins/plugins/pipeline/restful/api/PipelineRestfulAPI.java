@@ -15,6 +15,7 @@ import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.interceptor.RequirePOST;
 
 import java.io.IOException;
@@ -50,7 +51,8 @@ public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
     }
 
     @RequirePOST
-    public HttpResponse doUpdate(@QueryParameter String script) throws IOException {
+    public HttpResponse doUpdate(StaplerRequest request) throws IOException {
+        String script = request.getParameter("script");
         Jenkins.get().checkPermission(Item.CONFIGURE);
 
         WorkflowJob job = getJob();
