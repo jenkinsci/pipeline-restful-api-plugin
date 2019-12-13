@@ -5,8 +5,10 @@ import hudson.Extension;
 import hudson.model.Item;
 import hudson.model.RootAction;
 import jenkins.model.Jenkins;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.QueryParameter;
 
 import javax.annotation.CheckForNull;
 import java.util.ArrayList;
@@ -35,11 +37,17 @@ public class ItemAPI implements RootAction {
     }
 
     @ServeJson
-    public List<SimpleItem> doList() {
+    public List<SimpleItem> doList(@QueryParameter String name,
+                                   @QueryParameter String type) {
         List<Item> items = Jenkins.get().getAllItems();
         List<SimpleItem> simpleItems = new ArrayList<>();
 
-        items.forEach(item -> simpleItems.add(SimpleItemUtils.convert(item)));
+        boolean filterName = StringUtils.isNotEmpty(name);
+        boolean filterType = StringUtils.isNotEmpty(type);
+
+        items.stream().filter(item -> !filterName || item.getName().contains(name)).
+                filter(item -> !filterType || item.getClass().getSimpleName().contains(type)).
+                forEach(item -> simpleItems.add(SimpleItemUtils.convert(item)));
 
         return simpleItems;
     }
