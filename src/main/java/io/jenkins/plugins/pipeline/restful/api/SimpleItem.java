@@ -1,7 +1,10 @@
 package io.jenkins.plugins.pipeline.restful.api;
 
 import hudson.model.AbstractItem;
+import hudson.model.AbstractProject;
 import hudson.model.Item;
+import hudson.model.Job;
+import jenkins.model.ParameterizedJobMixIn;
 
 public class SimpleItem {
     private String name;
@@ -10,6 +13,15 @@ public class SimpleItem {
     private String type;
     private String shortURL;
     private String url;
+
+    /** comes from Job */
+    private boolean buildable;
+    private boolean building;
+    private boolean inQueue;
+
+    /** comes from ParameterizedJob */
+    private boolean parameterized;
+    private boolean disabled;
 
     public String getName() {
         return name;
@@ -58,6 +70,46 @@ public class SimpleItem {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public boolean isBuildable() {
+        return buildable;
+    }
+
+    public void setBuildable(boolean buildable) {
+        this.buildable = buildable;
+    }
+
+    public boolean isBuilding() {
+        return building;
+    }
+
+    public void setBuilding(boolean building) {
+        this.building = building;
+    }
+
+    public boolean isInQueue() {
+        return inQueue;
+    }
+
+    public void setInQueue(boolean inQueue) {
+        this.inQueue = inQueue;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public boolean isParameterized() {
+        return parameterized;
+    }
+
+    public void setParameterized(boolean parameterized) {
+        this.parameterized = parameterized;
+    }
 }
 
 class SimpleItemUtils {
@@ -72,6 +124,19 @@ class SimpleItemUtils {
 
         if (item instanceof AbstractItem) {
             simpleItem.setDescription(((AbstractItem) item).getDescription());
+        }
+
+        if (item instanceof Job) {
+            Job job = (Job) item;
+            simpleItem.setBuildable(job.isBuildable());
+            simpleItem.setBuilding(job.isBuilding());
+            simpleItem.setInQueue(job.isInQueue());
+        }
+
+        if (item instanceof ParameterizedJobMixIn.ParameterizedJob) {
+            ParameterizedJobMixIn.ParameterizedJob job = (ParameterizedJobMixIn.ParameterizedJob) item;
+            simpleItem.setParameterized(job.isParameterized());
+            simpleItem.setDisabled(job.isDisabled());
         }
 
         return simpleItem;
