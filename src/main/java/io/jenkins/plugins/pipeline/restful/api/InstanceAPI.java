@@ -6,10 +6,12 @@ import hudson.model.RootAction;
 import hudson.util.HttpResponses;
 import jenkins.model.Jenkins;
 import jenkins.model.identity.IdentityRootAction;
+import jenkins.slaves.JnlpSlaveAgentProtocol;
 import org.acegisecurity.AccessDeniedException;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.HttpResponse;
+import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.interceptor.RequirePOST;
 
@@ -64,6 +66,16 @@ public class InstanceAPI implements RootAction {
         }
 
         return HttpResponses.ok();
+    }
+
+    @RequirePOST
+    public HttpResponse doAgentSecret(@QueryParameter String name) {
+        try {
+            return HttpResponses.text(JnlpSlaveAgentProtocol.SLAVE_SECRET.mac(name));
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "cannot get the slave secret", e);
+            return HttpResponses.errorJSON(e.getMessage());
+        }
     }
 }
 
