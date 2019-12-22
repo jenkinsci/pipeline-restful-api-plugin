@@ -17,6 +17,9 @@ import org.kohsuke.stapler.interceptor.RequirePOST;
 
 import javax.annotation.CheckForNull;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +54,28 @@ public class InstanceAPI implements RootAction {
         jenkinsInstance.setSystemMessage(Jenkins.get().getSystemMessage());
 
         return jenkinsInstance;
+    }
+
+    @ServeJson
+    public Properties doSystemProperties() {
+        try {
+            Jenkins.get().checkPermission(Jenkins.ADMINISTER);
+            return System.getProperties();
+        } catch (AccessDeniedException e) {
+            LOGGER.log(Level.SEVERE, "no permission to get system properties", e);
+        }
+        return new Properties();
+    }
+
+    @ServeJson
+    public Map<String, String> doSystemEnv() {
+        try {
+            Jenkins.get().checkPermission(Jenkins.ADMINISTER);
+            return System.getenv();
+        } catch (AccessDeniedException e) {
+            LOGGER.log(Level.SEVERE, "no permission to get system environment", e);
+        }
+        return new HashMap<>();
     }
 
     @RequirePOST
