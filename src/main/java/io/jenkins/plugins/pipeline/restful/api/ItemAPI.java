@@ -39,6 +39,7 @@ public class ItemAPI implements RootAction {
     @ServeJson
     public List<SimpleItem> doList(@QueryParameter String name,
                                    @QueryParameter String type,
+                                   @QueryParameter String parent,
                                    @QueryParameter int start,
                                    @QueryParameter int limit) {
         List<Item> items = Jenkins.get().getAllItems();
@@ -52,6 +53,7 @@ public class ItemAPI implements RootAction {
 
         items.stream().filter(item -> !filterName || item.getName().contains(name)).
                 filter(item -> !filterType || item.getClass().getSimpleName().contains(type)).
+                filter(item -> StringUtils.isBlank(parent) || item.getFullName().startsWith(parent)).
                 skip(start).limit(limit).
                 forEach(item -> simpleItems.add(SimpleItemUtils.convert(item)));
 
