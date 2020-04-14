@@ -67,15 +67,5 @@ public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
         return HttpResponses.ok();
     }
 
-    @ServeJson
-    public JSONObject doGetPluginList() throws IOException {
-        List<PluginWrapper> pluginList = Jenkins.get().pluginManager.getPlugins();
-        JSONObject pluginJSON = new JSONObject();
-        for(PluginWrapper pluginWrapper: pluginList) {
-            pluginJSON.put("artifactId", pluginWrapper.getDisplayName());
-            pluginJSON.put("groupId", pluginWrapper.getLongName());
-            pluginJSON.put("source", new JSONObject().put("version", pluginWrapper.getVersion()));
-        }
-        return pluginJSON;
-    }
+
 }
