@@ -13,7 +13,7 @@ import net.sf.json.JSONObject;
 public class PipelineEndpoint implements RootAction {
 
 
-    public static final String PIPELINE_WEBHOOK_URL = "pipeline-server-webhook";
+    public static final String PIPELINE_WEBHOOK_URL = "/cli/pluginManager";
     @CheckForNull
     @Override
     public String getIconFileName() {
