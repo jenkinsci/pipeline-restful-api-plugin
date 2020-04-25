@@ -24,7 +24,6 @@ import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.interceptor.RequirePOST;
 
 import java.io.IOException;
-import org.kohsuke.stapler.verb.GET;
 
 @Extension
 @Restricted(NoExternalUse.class)
