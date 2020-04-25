@@ -3,17 +3,11 @@ package io.jenkins.plugins.pipeline.restful.api;
 import com.cloudbees.workflow.rest.AbstractWorkflowJobActionHandler;
 import com.cloudbees.workflow.util.ModelUtil;
 import com.cloudbees.workflow.util.ServeJson;
-import com.fasterxml.jackson.databind.JsonNode;
 import hudson.Extension;
 import hudson.ExtensionList;
-import hudson.Plugin;
-import hudson.PluginWrapper;
 import hudson.model.Item;
 import hudson.util.HttpResponses;
-import java.net.HttpURLConnection;
-import java.util.List;
 import jenkins.model.Jenkins;
-import net.sf.json.JSONObject;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.flow.FlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
@@ -65,6 +59,4 @@ public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
 
         return HttpResponses.ok();
     }
-
-
 }
