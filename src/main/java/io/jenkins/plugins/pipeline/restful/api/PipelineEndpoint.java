@@ -1,19 +1,21 @@
 package io.jenkins.plugins.pipeline.restful.api;
 
 import com.cloudbees.workflow.util.ServeJson;
+import hudson.Extension;
 import hudson.PluginWrapper;
 import hudson.model.RootAction;
-import java.io.IOException;
 import java.util.List;
+import java.util.jar.Attributes;
 import javax.annotation.CheckForNull;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
 
+@Extension
+@Restricted(NoExternalUse.class)
 public class PipelineEndpoint implements RootAction {
-
-
-    public static final String PIPELINE_WEBHOOK_URL = "/cli/pluginManager";
     @CheckForNull
     @Override
     public String getIconFileName() {
@@ -23,24 +25,29 @@ public class PipelineEndpoint implements RootAction {
     @CheckForNull
     @Override
     public String getDisplayName() {
-        return null;
+        return "PipelineEndpoint";
     }
 
     @CheckForNull
     @Override
     public String getUrlName() {
-        return PIPELINE_WEBHOOK_URL;
+        return "jcliPluginManager";
     }
 
     @ServeJson
-    public JSONArray doGetPluginList() throws IOException {
+    public JSONArray doPluginList() {
         List<PluginWrapper> pluginList = Jenkins.get().pluginManager.getPlugins();
         JSONObject pluginJSON = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for(PluginWrapper pluginWrapper: pluginList) {
-            pluginJSON.put("artifactId", pluginWrapper.getDisplayName());
-            pluginJSON.put("groupId", pluginWrapper.getLongName());
-            pluginJSON.put("source", new JSONObject().put("version", pluginWrapper.getVersion()));
+            Attributes attr = pluginWrapper.getManifest().getMainAttributes();
+
+            pluginJSON.put("artifactId", attr.getValue("Short-Name"));
+            pluginJSON.put("groupId", attr.getValue("Group-Id"));
+
+            JSONObject version = new JSONObject();
+            version.put("version", pluginWrapper.getVersion());
+            pluginJSON.put("source", version);
             jsonArray.add(pluginJSON);
         }
         return jsonArray;
