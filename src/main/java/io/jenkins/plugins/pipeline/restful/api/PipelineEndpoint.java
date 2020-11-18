@@ -4,9 +4,11 @@ import com.cloudbees.workflow.util.ServeJson;
 import hudson.Extension;
 import hudson.PluginWrapper;
 import hudson.model.RootAction;
+
 import java.util.List;
 import java.util.jar.Attributes;
 import javax.annotation.CheckForNull;
+
 import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -36,6 +38,8 @@ public class PipelineEndpoint implements RootAction {
 
     @ServeJson
     public JSONArray doPluginList() {
+        Jenkins.get().checkPermission(Jenkins.ADMINISTER);
+
         List<PluginWrapper> pluginList = Jenkins.get().pluginManager.getPlugins();
         JSONObject pluginJSON = new JSONObject();
         JSONArray jsonArray = new JSONArray();
@@ -52,5 +56,4 @@ public class PipelineEndpoint implements RootAction {
         }
         return jsonArray;
     }
-
 }
