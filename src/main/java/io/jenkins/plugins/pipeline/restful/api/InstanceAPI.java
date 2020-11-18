@@ -3,20 +3,28 @@ package io.jenkins.plugins.pipeline.restful.api;
 import com.cloudbees.workflow.util.ServeJson;
 import hudson.Extension;
 import hudson.model.RootAction;
+import hudson.model.User;
 import hudson.util.HttpResponses;
 import jenkins.model.Jenkins;
 import jenkins.model.identity.IdentityRootAction;
+import jenkins.security.ApiTokenProperty;
 import jenkins.slaves.JnlpSlaveAgentProtocol;
+import net.sf.json.JSONObject;
 import org.acegisecurity.AccessDeniedException;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
-import org.kohsuke.stapler.HttpResponse;
-import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.*;
 import org.kohsuke.stapler.interceptor.RequirePOST;
 
 import javax.annotation.CheckForNull;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -101,6 +109,65 @@ public class InstanceAPI implements RootAction {
             LOGGER.log(Level.SEVERE, "cannot get the slave secret", e);
             return HttpResponses.errorJSON(e.getMessage());
         }
+    }
+
+    /**
+     * Generate the user token which is prepare for https://github.com/jenkins-zh/jenkins-cli
+     * @param rsp
+     * @param callback
+     * @throws IOException
+     * @throws ServletException
+     */
+    public void doGenerateToken(StaplerResponse rsp, @QueryParameter(required = true) String callback) throws IOException, ServletException {
+        User user = User.current();
+        if (user == null) {
+            System.out.println("not login yet");
+            return;
+        }
+        ApiTokenProperty token = user.getProperty(ApiTokenProperty.class);
+        ApiTokenProperty.DescriptorImpl desc = (ApiTokenProperty.DescriptorImpl) token.getDescriptor();
+        HttpResponse response = desc.doGenerateNewToken(user, "jcli-auto-");
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        StaplerResponseWrapper out = new StaplerResponseWrapper(rsp) {
+            @Override
+            public ServletOutputStream getOutputStream() throws IOException {
+                return new ServletOutputStream(){
+                    @Override
+                    public void write(int b) throws IOException {
+                        output.write(b);
+                    }
+
+                    @Override
+                    public boolean isReady() {
+                        return false;
+                    }
+
+                    @Override
+                    public void setWriteListener(WriteListener writeListener) {
+
+                    }
+                };
+            }
+        };
+        response.generateResponse(null, out, null);
+
+        HttpURLConnection urlCon = (HttpURLConnection) new URL(callback).openConnection();
+        urlCon.setRequestMethod("POST");
+        urlCon.setDoOutput(true);
+
+        urlCon.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        JSONObject jsonObj = JSONObject.fromObject(output.toString());
+        jsonObj.getJSONObject("data").put("userName", user.getFullName());
+        urlCon.setFixedLengthStreamingMode(jsonObj.toString().length());
+
+        try(OutputStream os = urlCon.getOutputStream()) {
+            os.write(jsonObj.toString().getBytes());
+        }
+
+        String result = "All set, jcli is ready! For example: 'jcli plugin list'. You can close this page now.";
+        rsp.setContentLength(result.length());
+        rsp.getWriter().write(result);
     }
 }
 
