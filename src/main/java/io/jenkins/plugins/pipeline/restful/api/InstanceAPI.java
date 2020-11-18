@@ -10,7 +10,6 @@ import jenkins.model.identity.IdentityRootAction;
 import jenkins.security.ApiTokenProperty;
 import jenkins.slaves.JnlpSlaveAgentProtocol;
 import net.sf.json.JSONObject;
-import org.acegisecurity.AccessDeniedException;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.*;
@@ -66,34 +65,33 @@ public class InstanceAPI implements RootAction {
 
     @ServeJson
     public Properties doSystemProperties() {
-        try {
-            Jenkins.get().checkPermission(Jenkins.ADMINISTER);
-            return System.getProperties();
-        } catch (AccessDeniedException e) {
-            LOGGER.log(Level.SEVERE, "no permission to get system properties", e);
+        if (!Jenkins.get().hasPermission(Jenkins.ADMINISTER)) {
+            LOGGER.severe("no permission to get system properties");
+            return new Properties();
         }
-        return new Properties();
+        return System.getProperties();
     }
 
     @ServeJson
     public Map<String, String> doSystemEnv() {
-        try {
-            Jenkins.get().checkPermission(Jenkins.ADMINISTER);
-            return System.getenv();
-        } catch (AccessDeniedException e) {
-            LOGGER.log(Level.SEVERE, "no permission to get system environment", e);
+        if (!Jenkins.get().hasPermission(Jenkins.ADMINISTER)) {
+            LOGGER.severe("no permission to get system environment");
+            return new HashMap<>();
         }
-        return new HashMap<>();
+        return System.getenv();
     }
 
     @RequirePOST
     public HttpResponse doUpdateMessage(StaplerRequest req) {
+        if (!Jenkins.get().hasPermission(Jenkins.ADMINISTER)) {
+            LOGGER.severe("no permission to set system message");
+            return HttpResponses.errorJSON("no permission to set system message");
+        }
         String message = req.getParameter("message");
 
         try {
-            Jenkins.get().checkPermission(Jenkins.ADMINISTER);
             Jenkins.get().setSystemMessage(message);
-        } catch (IOException | AccessDeniedException e) {
+        } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "cannot set system message of Jenkins", e);
             return HttpResponses.errorJSON(e.getMessage());
         }
