@@ -172,9 +172,18 @@ public class InstanceAPI implements RootAction {
     }
 
     @RequirePOST
-    public HttpResponse doRun(@QueryParameter String script, @QueryParameter String agent) {
+    public HttpResponse doRun(@QueryParameter String script, @QueryParameter String agent, StaplerRequest req) {
         if (!Jenkins.get().hasPermission(Jenkins.ADMINISTER)) {
             return HttpResponses.errorJSON("no permission to execute script on '" + agent + "'");
+        }
+
+        try {
+            JSONObject data = req.getSubmittedForm();
+
+            script = script == null ? data.getString("script") : script;
+            agent = agent == null ? data.getString("agent") : agent;
+        } catch (ServletException e) {
+            e.printStackTrace();
         }
 
         Computer computer = Jenkins.get().getComputer(agent);
@@ -189,7 +198,7 @@ public class InstanceAPI implements RootAction {
 
         JSONObject output = new JSONObject();
         try {
-            output.put("result", RemotingDiagnostics.executeGroovy(script, channel));
+            output.put("message", RemotingDiagnostics.executeGroovy(script, channel));
         } catch (IOException | InterruptedException e) {
             return HttpResponses.errorJSON(e.getMessage());
         }
