@@ -2,9 +2,12 @@ package io.jenkins.plugins.pipeline.restful.api;
 
 import com.cloudbees.workflow.util.ServeJson;
 import hudson.Extension;
+import hudson.model.Computer;
 import hudson.model.RootAction;
 import hudson.model.User;
+import hudson.remoting.VirtualChannel;
 import hudson.util.HttpResponses;
+import hudson.util.RemotingDiagnostics;
 import jenkins.model.Jenkins;
 import jenkins.model.identity.IdentityRootAction;
 import jenkins.security.ApiTokenProperty;
@@ -166,6 +169,32 @@ public class InstanceAPI implements RootAction {
         String result = "All set, jcli is ready! For example: 'jcli plugin list'. You can close this page now.";
         rsp.setContentLength(result.length());
         rsp.getWriter().write(result);
+    }
+
+    @RequirePOST
+    public HttpResponse doRun(@QueryParameter String script, @QueryParameter String agent) {
+        if (!Jenkins.get().hasPermission(Jenkins.ADMINISTER)) {
+            return HttpResponses.errorJSON("no permission to execute script on '" + agent + "'");
+        }
+
+        Computer computer = Jenkins.get().getComputer(agent);
+        if (computer == null) {
+            return HttpResponses.errorJSON("cannot find agent: " + agent);
+        }
+
+        VirtualChannel channel = computer.getChannel();
+        if (channel == null) {
+            return HttpResponses.errorJSON(agent + " is offline");
+        }
+
+        JSONObject output = new JSONObject();
+        try {
+            output.put("result", RemotingDiagnostics.executeGroovy(script, channel));
+        } catch (IOException | InterruptedException e) {
+            return HttpResponses.errorJSON(e.getMessage());
+        }
+
+        return HttpResponses.okJSON(output);
     }
 }
 

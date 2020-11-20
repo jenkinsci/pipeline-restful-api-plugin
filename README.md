@@ -29,3 +29,7 @@ Sample response:
 	}
 }
 ```
+
+## Run script on agent
+
+`curl http://localhost/jenkins/instance/run?agent=&script=println%20"uname%20-a".execute().text -X POST`
