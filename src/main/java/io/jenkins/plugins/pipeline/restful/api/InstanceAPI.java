@@ -6,16 +6,19 @@ import hudson.model.RootAction;
 import hudson.model.User;
 import hudson.util.HttpResponses;
 import jenkins.model.Jenkins;
+import jenkins.model.JenkinsLocationConfiguration;
 import jenkins.model.identity.IdentityRootAction;
 import jenkins.security.ApiTokenProperty;
 import jenkins.slaves.JnlpSlaveAgentProtocol;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.*;
 import org.kohsuke.stapler.interceptor.RequirePOST;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.MatchesPattern;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
@@ -166,6 +169,43 @@ public class InstanceAPI implements RootAction {
         String result = "All set, jcli is ready! For example: 'jcli plugin list'. You can close this page now.";
         rsp.setContentLength(result.length());
         rsp.getWriter().write(result);
+    }
+
+    @RequirePOST
+    public HttpResponse doSetLocation(@QueryParameter String rootURL, @QueryParameter String email) {
+        if (!Jenkins.get().hasPermission(Jenkins.ADMINISTER)) {
+            return HttpResponses.errorJSON("cannot set Jenkins location due to lack of permission");
+        }
+
+        JenkinsLocationConfiguration config = JenkinsLocationConfiguration.get();
+        if (config == null) {
+            return HttpResponses.errorJSON("cannot set Jenkins location due to it is undefined");
+        }
+
+        if (StringUtils.isNotBlank(rootURL)) {
+            config.setUrl(rootURL);
+        }
+
+        if (StringUtils.isNotBlank(email)) {
+            config.setAdminAddress(email);
+        }
+        config.save();
+        return HttpResponses.ok();
+    }
+
+    @ServeJson
+    public Map<String, String> doGetLocation() {
+        Map<String, String> data = new HashMap<>();
+        if (!Jenkins.get().hasPermission(Jenkins.ADMINISTER)) {
+            return data;
+        }
+
+        JenkinsLocationConfiguration config = JenkinsLocationConfiguration.get();
+        if (config != null) {
+            data.put("rootURL", config.getUrl());
+            data.put("email", config.getAdminAddress());
+        }
+        return data;
     }
 }
 
