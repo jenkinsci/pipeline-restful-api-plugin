@@ -29,3 +29,9 @@ Sample response:
 	}
 }
 ```
+
+## Parameters
+
+Add parameters: `curl http://localhost:8080/jenkins/job/test/restFul/addParameter --data 'params=[{"name":"name","value":"rick","desc":"this is a name"}]'`
+
+Remove parameters: `curl -X POST "http://localhost:8080/jenkins/job/test/restFul/removeParameter?params=name,age"`

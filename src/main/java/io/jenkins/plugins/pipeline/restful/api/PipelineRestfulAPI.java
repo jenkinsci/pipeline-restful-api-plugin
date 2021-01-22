@@ -3,7 +3,6 @@ package io.jenkins.plugins.pipeline.restful.api;
 import com.cloudbees.workflow.rest.AbstractWorkflowJobActionHandler;
 import com.cloudbees.workflow.util.ModelUtil;
 import com.cloudbees.workflow.util.ServeJson;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import hudson.Extension;
 import hudson.ExtensionList;
@@ -14,6 +13,7 @@ import jenkins.model.ParameterizedJobMixIn;
 import jenkins.util.TimeDuration;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.flow.FlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
@@ -32,6 +32,7 @@ import org.kohsuke.stapler.interceptor.RequirePOST;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -76,6 +77,72 @@ public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
         job.setDefinition(new CpsFlowDefinition(script, true));
         job.save();
 
+        return HttpResponses.ok();
+    }
+
+    @RequirePOST
+    public HttpResponse doAddParameter(StaplerRequest req) {
+        Jenkins.get().checkPermission(Item.CONFIGURE);
+
+        String params = req.getParameter("params");
+        JSONArray array = JSONArray.fromObject(params);
+
+        WorkflowJob job = getJob();
+        ParametersDefinitionProperty paramDefPro = job.getProperty(ParametersDefinitionProperty.class);
+        List<ParameterDefinition> defAll = new ArrayList<>();
+        if (paramDefPro != null) {
+            defAll.addAll(paramDefPro.getParameterDefinitions());
+        }
+
+        for (Object item : array) {
+            JSONObject obj = (JSONObject) item;
+
+            StringParameterDefinition str = new StringParameterDefinition(obj.getString("name"),
+                    obj.getString("value"), obj.getString("desc"), true);
+            defAll.add(str);
+
+        }
+        try {
+            job.addProperty(new ParametersDefinitionProperty(defAll));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return HttpResponses.errorJSON(e.getMessage());
+        }
+        return HttpResponses.ok();
+    }
+
+    @RequirePOST
+    public HttpResponse doRemoveParameter(@QueryParameter String params) {
+        Jenkins.get().checkPermission(Item.CONFIGURE);
+
+        if (StringUtils.isEmpty(params)) {
+            return HttpResponses.errorJSON("params cannot be empty");
+        }
+
+        WorkflowJob job = getJob();
+
+        ParametersDefinitionProperty paramDefPro = job.getProperty(ParametersDefinitionProperty.class);
+        if (paramDefPro == null) {
+            return HttpResponses.text("no ParametersDefinitionProperty found");
+        }
+
+        paramDefPro.getParameterDefinitions().removeIf(paramDef -> {
+            for (String param : params.split(",")) {
+                if (paramDef.getName().equals(param)) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        if (paramDefPro.getParameterDefinitions().size() == 0) {
+            try {
+                job.removeProperty(paramDefPro);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return HttpResponses.errorJSON(e.getMessage());
+            }
+        }
         return HttpResponses.ok();
     }
 
