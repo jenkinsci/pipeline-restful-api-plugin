@@ -298,7 +298,7 @@ public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
     }
 
     @ExportedBean
-    class IdentifyCause extends Cause {
+    public static class IdentifyCause extends Cause {
         private String uuid;
         private String message;
 
