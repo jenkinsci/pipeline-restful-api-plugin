@@ -197,7 +197,7 @@ public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
     }
 
     @ExportedBean
-    class IdentityBuild {
+    public static class IdentityBuild {
         private WorkflowRun build;
         private IdentifyCause cause;
 
