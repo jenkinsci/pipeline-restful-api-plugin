@@ -179,9 +179,6 @@ public class InstanceAPI implements RootAction {
         }
 
         JenkinsLocationConfiguration config = JenkinsLocationConfiguration.get();
-        if (config == null) {
-            return HttpResponses.errorJSON("cannot set Jenkins location due to it is undefined");
-        }
 
         if (StringUtils.isNotBlank(rootURL)) {
             config.setUrl(rootURL);
