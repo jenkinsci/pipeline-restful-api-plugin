@@ -25,6 +25,7 @@ import javax.servlet.WriteListener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -158,12 +159,12 @@ public class InstanceAPI implements RootAction {
         urlCon.setDoOutput(true);
 
         urlCon.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        JSONObject jsonObj = JSONObject.fromObject(output.toString());
+        JSONObject jsonObj = JSONObject.fromObject(output.toString(StandardCharsets.UTF_8));
         jsonObj.getJSONObject("data").put("userName", user.getFullName());
         urlCon.setFixedLengthStreamingMode(jsonObj.toString().length());
 
         try(OutputStream os = urlCon.getOutputStream()) {
-            os.write(jsonObj.toString().getBytes());
+            os.write(jsonObj.toString().getBytes(StandardCharsets.UTF_8));
         }
 
         String result = "All set, jcli is ready! For example: 'jcli plugin list'. You can close this page now.";
@@ -178,9 +179,6 @@ public class InstanceAPI implements RootAction {
         }
 
         JenkinsLocationConfiguration config = JenkinsLocationConfiguration.get();
-        if (config == null) {
-            return HttpResponses.errorJSON("cannot set Jenkins location due to it is undefined");
-        }
 
         if (StringUtils.isNotBlank(rootURL)) {
             config.setUrl(rootURL);

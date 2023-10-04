@@ -12,6 +12,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.net.URL;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class HttpFlowDefinition extends FlowDefinition {
         try(InputStream input = new URL(url).openStream()) {
             ByteArrayOutputStream data = new ByteArrayOutputStream();
             IOUtils.copy(input, data);
-            script = data.toString();
+            script = data.toString(StandardCharsets.UTF_8);
         }
         return new CpsFlowExecution(this.script, this.sandbox, owner);
     }
