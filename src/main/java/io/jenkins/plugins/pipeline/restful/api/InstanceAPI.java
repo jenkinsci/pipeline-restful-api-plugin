@@ -164,7 +164,7 @@ public class InstanceAPI implements RootAction {
         urlCon.setFixedLengthStreamingMode(jsonObj.toString().length());
 
         try(OutputStream os = urlCon.getOutputStream()) {
-            os.write(jsonObj.toString().getBytes());
+            os.write(jsonObj.toString().getBytes(StandardCharsets.UTF_8));
         }
 
         String result = "All set, jcli is ready! For example: 'jcli plugin list'. You can close this page now.";
