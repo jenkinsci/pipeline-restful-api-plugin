@@ -25,6 +25,7 @@ import javax.servlet.WriteListener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -158,7 +159,7 @@ public class InstanceAPI implements RootAction {
         urlCon.setDoOutput(true);
 
         urlCon.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        JSONObject jsonObj = JSONObject.fromObject(output.toString());
+        JSONObject jsonObj = JSONObject.fromObject(output.toString(StandardCharsets.UTF_8));
         jsonObj.getJSONObject("data").put("userName", user.getFullName());
         urlCon.setFixedLengthStreamingMode(jsonObj.toString().length());
 
