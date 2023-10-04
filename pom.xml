@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>3.43</version>
+        <version>4.74</version>
         <relativePath />
     </parent>
     <groupId>io.jenkins.plugins</groupId>
@@ -12,8 +12,7 @@
     <version>0.13-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <properties>
-        <jenkins.version>2.164.1</jenkins.version>
-        <java.level>8</java.level>
+        <jenkins.version>2.361.4</jenkins.version>
     </properties>
     <name>Pipeline restFul API Plugin</name>
 
