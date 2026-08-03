@@ -11,7 +11,6 @@ import jenkins.model.identity.IdentityRootAction;
 import jenkins.security.ApiTokenProperty;
 import jenkins.slaves.JnlpSlaveAgentProtocol;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.*;
@@ -182,11 +181,11 @@ public class InstanceAPI implements RootAction {
             return HttpResponses.errorJSON("cannot set Jenkins location due to it is undefined");
         }
 
-        if (StringUtils.isNotBlank(rootURL)) {
+        if ((rootURL != null && !rootURL.trim().isEmpty())) {
             config.setUrl(rootURL);
         }
 
-        if (StringUtils.isNotBlank(email)) {
+        if ((email != null && !email.trim().isEmpty())) {
             config.setAdminAddress(email);
         }
         config.save();

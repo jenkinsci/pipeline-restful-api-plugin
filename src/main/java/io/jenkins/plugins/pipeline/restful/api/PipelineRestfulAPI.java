@@ -13,7 +13,6 @@ import jenkins.model.ParameterizedJobMixIn;
 import jenkins.util.TimeDuration;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.flow.FlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
@@ -115,7 +114,7 @@ public class PipelineRestfulAPI extends AbstractWorkflowJobActionHandler {
     public HttpResponse doRemoveParameter(@QueryParameter String params) {
         Jenkins.get().checkPermission(Item.CONFIGURE);
 
-        if (StringUtils.isEmpty(params)) {
+        if ((params == null || params.isEmpty())) {
             return HttpResponses.errorJSON("params cannot be empty");
         }
 
