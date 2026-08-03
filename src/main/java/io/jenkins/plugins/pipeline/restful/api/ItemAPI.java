@@ -5,7 +5,6 @@ import hudson.Extension;
 import hudson.model.Item;
 import hudson.model.RootAction;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang.StringUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.QueryParameter;
@@ -45,15 +44,15 @@ public class ItemAPI implements RootAction {
         List<Item> items = Jenkins.get().getAllItems();
         List<SimpleItem> simpleItems = new ArrayList<>();
 
-        boolean filterName = StringUtils.isNotEmpty(name);
-        boolean filterType = StringUtils.isNotEmpty(type);
+        boolean filterName = (name != null && !name.isEmpty());
+        boolean filterType = (type != null && !type.isEmpty());
 
         start = start < 0 ? 0 : start;
         limit = limit <= 0 ? 50 : limit;
 
         items.stream().filter(item -> !filterName || item.getName().contains(name)).
                 filter(item -> !filterType || item.getClass().getSimpleName().contains(type)).
-                filter(item -> StringUtils.isBlank(parent) || item.getFullName().startsWith(parent)).
+                filter(item -> (parent == null || parent.trim().isEmpty()) || item.getFullName().startsWith(parent)).
                 skip(start).limit(limit).
                 forEach(item -> simpleItems.add(SimpleItemUtils.convert(item)));
 
